@@ -27,7 +27,13 @@
 - `frontend/js/gamificationPanel.js` — единая точка рендера блока статов; вызывается из `tasksPanel.js` (после любого изменения XP по задачам) и из `timer.js` (после завершения помидора), отслеживает переход через границу уровня и при пересечении показывает анимацию конфетти (`frontend/vendor/confetti.browser.js`, локальная копия, без npm-зависимости) на 2 секунды.
 - Завершение помидора само по себе XP не начисляет — как и в текущей версии macOS-приложения (`src/app.js`/`src/core/gamification.js`): XP даёт только отметка задач (`applyTaskToggleXP`, 25 XP за задачу). Поле `session.xp` сохраняется в сессии для совместимости схемы, но остаётся 0.
 
-Текст интерфейса пока только на русском. История дней, переключатель языка RU/UZ и `backend/` — в следующих тикетах.
+Готово (тикет 04 — «История по дням»):
+
+- `src/renderer/history.js` перенесён из `focus-tomato` без переписывания логики (UMD-модуль, `aggregateDayStats`/`getHistoryDays`); `frontend/js/history.js` — symlink на него, как и для остальных core-модулей.
+- Кнопка «История» в карточке таймера открывает оверлей (`frontend/js/historyPanel.js`) со списком последних 14 дней: для каждого дня — закрытые/всего задач, число помидоров, заработанный XP. Дни без активности показывают нули, а не пропадают из списка.
+- Оверлей закрывается кнопкой ✕ без потери состояния страницы (задачи/таймер/статы не перерисовываются заново).
+
+Текст интерфейса пока только на русском. Переключатель языка RU/UZ и `backend/` — в следующих тикетах.
 
 ## Запуск фронтенда локально
 
@@ -54,9 +60,11 @@ npm test
 src/
   core/gamification.js      — XP, уровни, стрик (UMD, источник правды)
   renderer/tasks.js         — парсинг ввода задач, createTask/toggleTask/reorderTasks (UMD)
+  renderer/history.js       — агрегация метрик по дням, aggregateDayStats/getHistoryDays (UMD)
 tests/
   gamification.test.js
   tasks.test.js
+  history.test.js
 frontend/
   index.html
   css/styles.css
@@ -65,8 +73,10 @@ frontend/
     storage.js           — чтение/запись состояния в localStorage
     gamification.js      — symlink → ../../src/core/gamification.js
     tasks.js              — symlink → ../../src/renderer/tasks.js
+    history.js             — symlink → ../../src/renderer/history.js
     timer.js               — логика Pomodoro-таймера
     tasksPanel.js           — UI задач: рендер, ввод, drag-and-drop, табы
     gamificationPanel.js   — блок уровня/XP/стрика, конфетти на level-up
+    historyPanel.js         — оверлей истории по дням
     app.js                  — bootstrap
 ```

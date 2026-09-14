@@ -55,6 +55,7 @@
         <div class="container app-inner">
           <h2>Фокус-таймер</h2>
           <p class="app-subtitle">Работает прямо здесь, в браузере — ничего устанавливать не нужно.</p>
+          <button class="button button-secondary button-sm" id="openHistoryButton">История</button>
 
           <div class="app-grid">
             <div class="timer-card">
@@ -147,13 +148,25 @@
       <div id="levelUpText">Level Up!</div>
     </div>
 
+    <div class="history-overlay hidden" id="historyOverlay">
+      <div class="history-panel">
+        <div class="history-header">
+          <h3>История</h3>
+          <button class="icon-button" id="historyCloseButton" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="history-body" id="historyBody"></div>
+      </div>
+    </div>
+
     <script src="./vendor/confetti.browser.js"></script>
     <script src="./js/storage.js"></script>
     <script src="./js/gamification.js"></script>
     <script src="./js/tasks.js"></script>
+    <script src="./js/history.js"></script>
     <script src="./js/timer.js"></script>
     <script src="./js/tasksPanel.js"></script>
     <script src="./js/gamificationPanel.js"></script>
+    <script src="./js/historyPanel.js"></script>
     <script src="./js/app.js"></script>
   </body>
 </html>
