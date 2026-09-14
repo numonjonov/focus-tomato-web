@@ -1,9 +1,3 @@
-/**
- * Pomodoro-таймер веб-версии FocusForge. Логика перенесена и адаптирована из
- * src/app.js исходного Electron-приложения (toggleTimer/startTimer/pauseTimer/
- * resetTimer/tickTimer/finishCurrentMode), но без window.api — состояние
- * читается и пишется напрямую через window.FocusForgeStorage (localStorage).
- */
 (function exportTimer(root) {
   const TIMER_RADIUS = 96;
   const TIMER_CIRCUMFERENCE = 2 * Math.PI * TIMER_RADIUS;
@@ -16,23 +10,16 @@
   let remainingSeconds = 25 * 60;
   let endTime = 0;
 
+  function bindElements() {
+    for (const element of document.querySelectorAll('[id]')) {
+      elements[element.id] = element;
+    }
+    elements.timerProgress.style.strokeDasharray = String(TIMER_CIRCUMFERENCE);
+  }
+
   function init() {
     data = root.FocusForgeStorage.loadData();
-    elements = {
-      timerProgress: document.getElementById('timerProgress'),
-      timerTime: document.getElementById('timerTime'),
-      modeText: document.getElementById('modeText'),
-      workModeButton: document.getElementById('workModeButton'),
-      breakModeButton: document.getElementById('breakModeButton'),
-      startPauseButton: document.getElementById('startPauseButton'),
-      resetButton: document.getElementById('resetButton'),
-      todaySessionsCount: document.getElementById('todaySessionsCount'),
-      pomodoroDoneModal: document.getElementById('pomodoroDoneModal'),
-      pomodoroAgainButton: document.getElementById('pomodoroAgainButton'),
-      pomodoroBreakButton: document.getElementById('pomodoroBreakButton')
-    };
-
-    elements.timerProgress.style.strokeDasharray = String(TIMER_CIRCUMFERENCE);
+    bindElements();
 
     elements.startPauseButton.addEventListener('click', toggleTimer);
     elements.resetButton.addEventListener('click', resetTimer);

@@ -1,9 +1,3 @@
-/**
- * Локальное хранилище состояния пользователя (localStorage), по аналогии со
- * схемой src/main/dataStore.js исходного Electron-приложения FocusForge:
- * { sessions, tasks, stats, settings }. Без слоя IPC/файловой системы —
- * читается и пишется напрямую из localStorage.
- */
 (function exportStorage(root) {
   const STORAGE_KEY = 'focusforge:data';
 
