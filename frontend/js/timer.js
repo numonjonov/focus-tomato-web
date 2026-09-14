@@ -28,6 +28,7 @@
     elements.pomodoroAgainButton.addEventListener('click', onPomodoroAgain);
     elements.pomodoroBreakButton.addEventListener('click', onPomodoroBreak);
     document.addEventListener('focusforge:langchange', renderTimer);
+    document.addEventListener('focusforge:settingschange', onSettingsChange);
 
     resetTimer();
     renderSessionsCount();
@@ -129,6 +130,20 @@
     mode = 'break';
     remainingSeconds = getModeDurationSeconds();
     startTimer();
+  }
+
+  // frontend/js/settingsPanel.js сохраняет новую длительность в localStorage
+  // и шлёт это событие сразу по клику на сегмент. Если таймер сейчас идёт,
+  // текущий отсчёт не трогаем — только подтягиваем свежие settings, чтобы
+  // следующий вызов getModeDurationSeconds() (после финиша помидора/отдыха)
+  // взял уже новое значение. Если таймер стоит — применяем сразу, как и
+  // в исходном Electron-приложении (см. saveSettings() в focus-tomato/src/app.js).
+  function onSettingsChange() {
+    data = root.FocusForgeStorage.loadData();
+    if (!isRunning) {
+      remainingSeconds = getModeDurationSeconds();
+      renderTimer();
+    }
   }
 
   function renderTimer() {

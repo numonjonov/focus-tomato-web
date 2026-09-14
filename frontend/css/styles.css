@@ -306,6 +306,13 @@ p {
   margin: 0 auto 36px;
 }
 
+.app-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
 .app-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 420px));
@@ -703,7 +710,8 @@ p {
 
 /* History */
 
-.history-overlay {
+.history-overlay,
+.settings-overlay {
   position: fixed;
   inset: 0;
   z-index: 55;
@@ -714,7 +722,8 @@ p {
   padding: 20px;
 }
 
-.history-panel {
+.history-panel,
+.settings-panel {
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 24px 24px 28px;
@@ -726,16 +735,39 @@ p {
   box-shadow: 0 32px 64px -24px rgba(43, 33, 24, 0.4);
 }
 
-.history-header {
+.history-header,
+.settings-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.history-header h3 {
+.history-header h3,
+.settings-header h3 {
   margin: 0;
   font-size: 20px;
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 12px 0 0;
+}
+
+.settings-label:first-child {
+  margin-top: 0;
+}
+
+.settings-body .mode-toggle {
+  margin-bottom: 4px;
 }
 
 .icon-button {
