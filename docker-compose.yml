@@ -1,0 +1,13 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - focusforge-data:/app/backend/data
+    restart: unless-stopped
+
+volumes:
+  focusforge-data:

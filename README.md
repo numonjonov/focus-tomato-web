@@ -51,6 +51,13 @@
 - Названия месяца/дня недели в истории форматируются вручную из словаря, а не через `Intl.DateTimeFormat` с локалью `uz` — в части браузеров для нестандартных локалей нет данных ICU, и `Intl` отдаёт нечитаемый фолбэк вместо названий.
 - `tests/i18n.test.js` проверяет, что у каждого ключа словаря есть перевод и на `ru`, и на `uz`.
 
+Готово (тикет 08 — «Докеризация и деплой-стек»):
+
+- `Dockerfile` (одностадийная сборка на `node:22-alpine`) собирает и запускает `backend/server.js`; `.dockerignore` исключает `node_modules`, `backend/data`, тесты и прочий мусор из образа.
+- `docker-compose.yml`: один сервис `backend`, порт публикуется наружу через `HOST_PORT` (по умолчанию `3000:3000`), SQLite-файл живёт в именованном volume `focusforge-data`, примонтированном на `/app/backend/data` — переживает пересборку и перезапуск контейнера. Nginx/SSL/reverse proxy намеренно не входят — см. `docs/adr/0001-web-version-own-server-backend.md` в `focus-tomato`.
+- Локально проверено: `docker compose up --build` поднимает бэкенд, `/` отдаёт фронтенд (`200`), `POST /api/subscribe` принимает и валидирует email; после `docker compose down` + `docker compose up` (без `--build`) ранее сохранённый email остаётся в базе — volume персистентен.
+- Сам деплой на сервер пользователя (доступ, DNS, TLS) — вне периметра этой задачи, подробности — в разделе «Деплой» ниже.
+
 ## Запуск бэкенда локально
 
 Бэкенд отдаёт `frontend/` сам — отдельный файловый сервер больше не нужен.
@@ -63,6 +70,61 @@ npm start
 Открыть `http://localhost:3000/`. Порт настраивается переменной окружения `PORT` (по умолчанию `3000`).
 
 SQLite-файл с подписками создаётся автоматически в `backend/data/subscribers.sqlite` (путь настраивается через `DB_PATH` или `DB_DIR`; директория и файл не коммитятся — см. `.gitignore`).
+
+## Деплой
+
+Приложение упаковано в Docker и готово к запуску одной командой. Сам деплой
+на сервер пользователя (доступ к серверу, DNS, TLS) — вне периметра этой
+задачи; ниже — инструкция, которой можно будет воспользоваться, когда доступ
+появится.
+
+### Собрать и поднять
+
+```bash
+docker compose up -d --build
+```
+
+Поднимет один сервис `backend`: соберёт образ из `Dockerfile` (`node:22-alpine`,
+одностадийная сборка, `npm ci --omit=dev` + `node backend/server.js`) и
+опубликует порт на хосте. По умолчанию — `3000:3000`; переопределить порт на
+хосте можно переменной окружения `HOST_PORT`:
+
+```bash
+HOST_PORT=8080 docker compose up -d --build
+```
+
+Проверить, что бэкенд поднялся и отдаёт фронтенд:
+
+```bash
+curl http://localhost:3000/
+```
+
+Остановить: `docker compose down` (без `-v` — том с базой не удаляется).
+
+### Где лежит БД
+
+SQLite-файл с email-подписками живёт в именованном Docker-volume
+`focusforge-data`, примонтированном на `/app/backend/data` внутри
+контейнера. Volume создаётся автоматически при первом запуске и переживает
+`docker compose down` / пересборку образа — данные теряются только при
+`docker compose down -v`.
+
+### Реальный GA4 ID
+
+В `frontend/index.html` подключён GA4-сниппет с placeholder-идентификатором
+`G-XXXXXXXXXX`. Перед деплоем в продакшен замените его на реальный GA4 ID в
+двух местах внутри `<head>` — в атрибуте `src` скрипта `gtag.js`
+(`src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"`) и в
+константе `GA4_MEASUREMENT_ID`, которую использует вызов `gtag('config', ...)`.
+
+### Что не входит в эту задачу
+
+Nginx, SSL/TLS, reverse proxy и DNS в `docker-compose.yml` намеренно
+отсутствуют — предполагается, что на сервере пользователя уже есть свой
+reverse proxy (см. ADR `docs/adr/0001-web-version-own-server-backend.md` в
+репозитории `focus-tomato`). Сам перенос контейнера на боевой сервер
+(передача доступа, поднятие `docker compose up -d` там) выполняется отдельно,
+когда пользователь предоставит доступ к серверу.
 
 ## Тесты
 
@@ -104,4 +166,7 @@ backend/
   server.js       — entrypoint (PORT/DB_PATH из env), npm start
   db.js            — SQLite через встроенный node:sqlite, таблица subscribers
   validateEmail.js — серверная валидация формата email
+Dockerfile          — сборка и запуск бэкенда (node:22-alpine, node backend/server.js)
+docker-compose.yml  — сервис backend, порт наружу через HOST_PORT, volume под SQLite
+.dockerignore       — исключает node_modules, backend/data, тесты из образа
 ```
