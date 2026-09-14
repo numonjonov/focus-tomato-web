@@ -21,22 +21,22 @@
 
     let data = root.FocusForgeStorage.loadData();
     const today = formatDateKey(new Date());
-    const nextStats = updateStreak(data.stats, data.sessions, today);
-    if (JSON.stringify(nextStats) !== JSON.stringify(data.stats)) {
-      data.stats = nextStats;
+    // updateStreak — no-op, если lastActiveDate уже сегодня; сохраняем только
+    // когда день действительно сменился, чтобы не писать в localStorage зря.
+    if (data.stats.lastActiveDate !== today) {
+      data.stats = updateStreak(data.stats, data.sessions, today);
       data = root.FocusForgeStorage.saveData(data);
     }
 
     lastLevel = getLevel(data.stats.totalXP).level;
-    render(data);
+    render(data, today);
   }
 
   function refresh() {
-    render(root.FocusForgeStorage.loadData());
+    render(root.FocusForgeStorage.loadData(), formatDateKey(new Date()));
   }
 
-  function render(data) {
-    const today = formatDateKey(new Date());
+  function render(data, today) {
     const level = getLevel(data.stats.totalXP);
     const progress = getLevelProgress(data.stats.totalXP);
     const todaySessions = getTodaySessions(data.sessions, today);
