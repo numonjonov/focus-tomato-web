@@ -6,4 +6,5 @@ document.addEventListener('DOMContentLoaded', () => {
   window.FocusForgeTimer.init();
   window.FocusForgeTasksPanel.init();
   window.FocusForgeHistoryPanel.init();
+  window.FocusForgeSubscribe.init();
 });

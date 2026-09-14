@@ -37,22 +37,31 @@
 
 - В `<head>` `frontend/index.html` подключён стандартный сниппет GA4 (`gtag.js`) с placeholder-идентификатором `G-XXXXXXXXXX` — перед деплоем в продакшен замените его на реальный GA4 ID (константа `GA4_MEASUREMENT_ID` и `src` скрипта в `index.html`).
 
-Текст интерфейса пока только на русском. Переключатель языка RU/UZ и `backend/` — в следующих тикетах.
+Готово (тикет 05 — «Email-подписка и бэкенд»):
 
-## Запуск фронтенда локально
+- `backend/` — Node.js + Express-приложение: отдаёт статику `frontend/` и принимает email-подписки.
+- `POST /api/subscribe` принимает `{ email }`, валидирует формат на сервере (`backend/validateEmail.js`), пишет в SQLite-таблицу `subscribers (id, email, created_at)` через встроенный `node:sqlite` (`backend/db.js`) — без внешнего драйвера. Уникальное ограничение на `email` (после нормализации в нижний регистр) — повторная отправка не создаёт дубликат и не возвращает ошибку. Невалидный email — `400` с сообщением `{ error }`.
+- В hero-секции лендинга (`frontend/index.html`) — форма email; `frontend/js/subscribePanel.js` шлёт `POST /api/subscribe` через `fetch` и показывает подтверждение или ошибку под формой.
+- Бэкенд не хранит и не принимает данные таймера/задач/XP — только email.
 
-Статические файлы, сборщик не нужен — достаточно любого файлового HTTP-сервера:
+Текст интерфейса пока только на русском. Переключатель языка RU/UZ — в следующих тикетах.
+
+## Запуск бэкенда локально
+
+Бэкенд отдаёт `frontend/` сам — отдельный файловый сервер больше не нужен.
 
 ```bash
-cd frontend
-python3 -m http.server 8123
+npm install
+npm start
 ```
 
-Открыть `http://localhost:8123/index.html`.
+Открыть `http://localhost:3000/`. Порт настраивается переменной окружения `PORT` (по умолчанию `3000`).
+
+SQLite-файл с подписками создаётся автоматически в `backend/data/subscribers.sqlite` (путь настраивается через `DB_PATH` или `DB_DIR`; директория и файл не коммитятся — см. `.gitignore`).
 
 ## Тесты
 
-Юнит-тесты для перенесённых core-модулей (`node:test`, без внешних зависимостей):
+Юнит-тесты для перенесённых core-модулей и бэкенда (`node:test`, без внешних тестовых зависимостей):
 
 ```bash
 npm test
@@ -69,6 +78,7 @@ tests/
   gamification.test.js
   tasks.test.js
   history.test.js
+  subscribe.test.js
 frontend/
   index.html
   css/styles.css
@@ -82,5 +92,11 @@ frontend/
     tasksPanel.js           — UI задач: рендер, ввод, drag-and-drop, табы
     gamificationPanel.js   — блок уровня/XP/стрика, конфетти на level-up
     historyPanel.js         — оверлей истории по дням
+    subscribePanel.js       — форма email в hero, POST /api/subscribe
     app.js                  — bootstrap
+backend/
+  app.js         — createApp({ dbPath, frontendDir }): статика + POST /api/subscribe
+  server.js       — entrypoint (PORT/DB_PATH из env), npm start
+  db.js            — SQLite через встроенный node:sqlite, таблица subscribers
+  validateEmail.js — серверная валидация формата email
 ```
