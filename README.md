@@ -20,7 +20,14 @@
 - Названия задач экранируются (`escapeHTML`) перед вставкой в разметку.
 - Видимого XP-бара/уровня пока нет (следующий тикет) — XP-состояние можно проверить в консоли через `FocusForgeStorage.loadData().stats.totalXP`.
 
-Текст интерфейса пока только на русском. Геймификация (XP-бар/уровень/стрик на экране), история дней, переключатель языка RU/UZ и `backend/` — в следующих тикетах.
+Готово (тикет 03 — «Геймификация: уровень, XP-бар, стрик, конфетти»):
+
+- Блок статов рядом с задачами: текущий уровень и его название (`getLevel`), прогресс-бар XP до следующего уровня (`getLevelProgress`), стрик дней подряд и счётчик сессий за сегодня (`getTodaySessions`).
+- Стрик пересчитывается через `updateStreak`/`PRODUCTIVE_DAY_SESSIONS` при загрузке страницы и при смене дня — источник истины та же `src/core/gamification.js`, без переписывания.
+- `frontend/js/gamificationPanel.js` — единая точка рендера блока статов; вызывается из `tasksPanel.js` (после любого изменения XP по задачам) и из `timer.js` (после завершения помидора), отслеживает переход через границу уровня и при пересечении показывает анимацию конфетти (`frontend/vendor/confetti.browser.js`, локальная копия, без npm-зависимости) на 2 секунды.
+- Завершение помидора само по себе XP не начисляет — как и в текущей версии macOS-приложения (`src/app.js`/`src/core/gamification.js`): XP даёт только отметка задач (`applyTaskToggleXP`, 25 XP за задачу). Поле `session.xp` сохраняется в сессии для совместимости схемы, но остаётся 0.
+
+Текст интерфейса пока только на русском. История дней, переключатель языка RU/UZ и `backend/` — в следующих тикетах.
 
 ## Запуск фронтенда локально
 
@@ -53,11 +60,13 @@ tests/
 frontend/
   index.html
   css/styles.css
+  vendor/confetti.browser.js — локальная копия canvas-confetti для анимации level-up
   js/
-    storage.js       — чтение/запись состояния в localStorage
-    gamification.js  — symlink → ../../src/core/gamification.js
-    tasks.js          — symlink → ../../src/renderer/tasks.js
-    timer.js          — логика Pomodoro-таймера
-    tasksPanel.js      — UI задач: рендер, ввод, drag-and-drop, табы
-    app.js             — bootstrap
+    storage.js           — чтение/запись состояния в localStorage
+    gamification.js      — symlink → ../../src/core/gamification.js
+    tasks.js              — symlink → ../../src/renderer/tasks.js
+    timer.js               — логика Pomodoro-таймера
+    tasksPanel.js           — UI задач: рендер, ввод, drag-and-drop, табы
+    gamificationPanel.js   — блок уровня/XP/стрика, конфетти на level-up
+    app.js                  — bootstrap
 ```

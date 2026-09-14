@@ -105,6 +105,22 @@
                 <div class="tasks-list" id="tasksDoneList"></div>
               </div>
             </div>
+
+            <div class="stats-card">
+              <div class="level-block">
+                <div class="level-number" id="levelNumber">Lvl 1</div>
+                <div class="level-name" id="levelName">Новичок</div>
+              </div>
+              <div class="xp-progress">
+                <div class="bar">
+                  <div class="bar-fill" id="xpBarFill"></div>
+                </div>
+                <p id="xpProgressText">0 / 100 XP до Lvl 2</p>
+              </div>
+              <p class="stats-line" id="streakText">🔥 0 дней</p>
+              <p class="stats-line" id="todaySessionsText">Сессий сегодня: 0</p>
+              <p class="stats-line" id="totalXPText">Всего XP: 0</p>
+            </div>
           </div>
         </div>
       </section>
@@ -126,11 +142,18 @@
       </div>
     </div>
 
+    <div class="level-up hidden" id="levelUpOverlay">
+      <canvas id="confettiCanvas"></canvas>
+      <div id="levelUpText">Level Up!</div>
+    </div>
+
+    <script src="./vendor/confetti.browser.js"></script>
     <script src="./js/storage.js"></script>
     <script src="./js/gamification.js"></script>
     <script src="./js/tasks.js"></script>
     <script src="./js/timer.js"></script>
     <script src="./js/tasksPanel.js"></script>
+    <script src="./js/gamificationPanel.js"></script>
     <script src="./js/app.js"></script>
   </body>
 </html>

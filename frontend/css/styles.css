@@ -227,7 +227,7 @@ p {
 
 .app-grid {
   display: grid;
-  grid-template-columns: minmax(0, 420px) minmax(0, 420px);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 420px));
   justify-content: center;
   gap: 24px;
   align-items: start;
@@ -524,6 +524,102 @@ p {
   color: var(--text);
 }
 
+/* Stats / gamification */
+
+.stats-card {
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 24px 28px;
+  box-shadow: 0 24px 48px -28px var(--shadow);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.level-block {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.level-number {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.level-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.xp-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.xp-progress .bar {
+  height: 8px;
+  overflow: hidden;
+  background: var(--bg-soft);
+  border-radius: 8px;
+}
+
+.xp-progress .bar-fill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--rest));
+  transition: width 0.25s ease;
+}
+
+.xp-progress p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.stats-line {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Level up */
+
+.level-up {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: rgba(43, 33, 24, 0.35);
+}
+
+.level-up canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#levelUpText {
+  position: relative;
+  padding: 24px 32px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  font-size: 28px;
+  font-weight: 900;
+  box-shadow: 0 20px 48px -16px var(--accent);
+}
+
 /* Footer */
 
 .site-footer {
@@ -596,6 +692,10 @@ p {
   }
 
   .tasks-card {
+    padding: 20px 18px 24px;
+  }
+
+  .stats-card {
     padding: 20px 18px 24px;
   }
 }

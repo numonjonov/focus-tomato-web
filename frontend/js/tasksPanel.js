@@ -42,6 +42,7 @@
 
   function persist() {
     data = root.FocusForgeStorage.saveData(data);
+    root.FocusForgeGamification.refresh();
   }
 
   function render() {

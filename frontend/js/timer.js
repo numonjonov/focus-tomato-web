@@ -92,6 +92,7 @@
     if (mode === 'work') {
       recordPomodoroSession();
       renderSessionsCount();
+      root.FocusForgeGamification.refresh();
       showModal();
       return;
     }
