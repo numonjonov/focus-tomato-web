@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusForge — Pomodoro-таймер с геймификацией</title>
+    <meta name="description" content="FocusForge — фокус-таймер по методике Pomodoro с задачами, XP и стриками. Работает прямо в браузере, без установки.">
+    <link rel="stylesheet" href="./css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#hero">🍅 FocusForge</a>
+        <a class="button button-primary button-sm" href="#app">Попробовать</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <div class="container hero-inner">
+          <p class="eyebrow">Pomodoro-таймер с геймификацией</p>
+          <h1>Фокус, который прокачивается вместе с тобой</h1>
+          <p class="hero-subtitle">
+            Помидоро-сессии, задачи на день и XP за прогресс — FocusForge превращает
+            рабочий день в игру, в которую хочется возвращаться.
+          </p>
+          <a class="button button-primary button-lg" href="#app">Начать фокус-сессию →</a>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <h2>Что внутри</h2>
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-icon">⏱️</div>
+              <h3>Таймер</h3>
+              <p>Кольцевой прогресс-бар и понятный отсчёт работы и отдыха по методике Pomodoro.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">✅</div>
+              <h3>Задачи</h3>
+              <p>Планируй день списком задач, перетаскивай для приоритета и отмечай готовое.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">🔥</div>
+              <h3>Геймификация</h3>
+              <p>XP за задачи и сессии, уровни и стрик дней подряд — прогресс, который видно.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-section" id="app">
+        <div class="container app-inner">
+          <h2>Фокус-таймер</h2>
+          <p class="app-subtitle">Работает прямо здесь, в браузере — ничего устанавливать не нужно.</p>
+
+          <div class="timer-card">
+            <div class="mode-toggle" role="tablist" aria-label="Режим таймера">
+              <button class="mode-toggle-btn is-active" id="workModeButton" data-mode="work" role="tab" aria-selected="true">Работа</button>
+              <button class="mode-toggle-btn" id="breakModeButton" data-mode="break" role="tab" aria-selected="false">Отдых</button>
+            </div>
+
+            <div class="timer-ring">
+              <svg viewBox="0 0 220 220" aria-hidden="true">
+                <circle class="ring-bg" cx="110" cy="110" r="96"></circle>
+                <circle class="ring-progress" id="timerProgress" cx="110" cy="110" r="96"></circle>
+              </svg>
+              <div class="timer-center">
+                <div class="timer-time" id="timerTime">25:00</div>
+                <div class="timer-mode-label" id="modeText">Фокус</div>
+              </div>
+            </div>
+
+            <div class="timer-actions">
+              <button class="button button-primary" id="startPauseButton">Старт</button>
+              <button class="button button-secondary" id="resetButton">Сброс</button>
+            </div>
+
+            <p class="timer-hint">Сегодня завершено помидоров: <strong id="todaySessionsCount">0</strong></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">🍅 FocusForge — фокус, который прокачивается вместе с тобой.</div>
+    </footer>
+
+    <div class="modal-overlay hidden" id="pomodoroDoneModal">
+      <div class="modal">
+        <div class="modal-emoji">🍅</div>
+        <h3>Помидор готов!</h3>
+        <p>Отличная работа. Что дальше?</p>
+        <div class="modal-actions">
+          <button class="button button-secondary" id="pomodoroAgainButton">Ещё 🍅</button>
+          <button class="button button-primary" id="pomodoroBreakButton">Отдохнуть</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/storage.js"></script>
+    <script src="./js/timer.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
