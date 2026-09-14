@@ -29,6 +29,7 @@
   const translations = {
     ru: {
       meta_title: 'FocusForge — Pomodoro-таймер с геймификацией',
+      meta_description: 'FocusForge — фокус-таймер по методике Pomodoro с задачами, XP и стриками. Работает прямо в браузере, без установки.',
       header_cta: 'Попробовать',
       lang_switch_label: 'Язык',
       lang_ru_label: 'RU',
@@ -105,6 +106,7 @@
     },
     uz: {
       meta_title: 'FocusForge — Gamifikatsiyali Pomodoro-taymer',
+      meta_description: "FocusForge — vazifalar, XP va seriyalar bilan Pomodoro usulidagi fokus-taymer. Hech narsa o'rnatmasdan, to'g'ridan-to'g'ri brauzerda ishlaydi.",
       header_cta: "Sinab ko'rish",
       lang_switch_label: 'Til',
       lang_ru_label: 'RU',
