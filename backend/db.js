@@ -1,4 +1,5 @@
 const { DatabaseSync } = require('node:sqlite');
+const { normalizeEmail } = require('./validateEmail');
 
 // Единственная ответственность бэкенда за данные — таблица email-подписок.
 // Никаких других сущностей (задачи/XP/таймер) здесь быть не должно.
@@ -19,7 +20,7 @@ function createDb(dbPath) {
   // Повторная подписка тем же email — не ошибка, просто не создаёт дубликат
   // (INSERT OR IGNORE молча ничего не делает при конфликте UNIQUE).
   function insertSubscriber(email) {
-    const normalized = email.trim().toLowerCase();
+    const normalized = normalizeEmail(email);
     const result = insertStmt.run(normalized, new Date().toISOString());
     return { created: result.changes > 0 };
   }

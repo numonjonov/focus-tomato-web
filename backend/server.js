@@ -8,7 +8,7 @@ const DB_PATH = process.env.DB_PATH || path.join(DATA_DIR, 'subscribers.sqlite')
 
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 
-const app = createApp({ dbPath: DB_PATH });
+const { app } = createApp({ dbPath: DB_PATH });
 
 app.listen(PORT, () => {
   console.log(`FocusForge Web слушает на http://localhost:${PORT} (БД: ${DB_PATH})`);

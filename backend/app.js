@@ -26,9 +26,16 @@ function createApp({ dbPath, frontendDir = DEFAULT_FRONTEND_DIR } = {}) {
     res.json({ success: true });
   });
 
-  app.close = () => db.close();
+  // Битый JSON в теле запроса — тоже понятная 400, а не дефолтная 500 от Express.
+  app.use((err, req, res, next) => {
+    if (err && err.type === 'entity.parse.failed') {
+      res.status(400).json({ error: 'Некорректный формат запроса.' });
+      return;
+    }
+    next(err);
+  });
 
-  return app;
+  return { app, close: () => db.close() };
 }
 
 module.exports = { createApp };

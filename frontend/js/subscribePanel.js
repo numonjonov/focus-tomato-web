@@ -2,10 +2,9 @@
   let elements = {};
 
   function bindElements() {
-    elements.subscribeForm = document.getElementById('subscribeForm');
-    elements.subscribeEmail = document.getElementById('subscribeEmail');
-    elements.subscribeSubmit = document.getElementById('subscribeSubmit');
-    elements.subscribeMessage = document.getElementById('subscribeMessage');
+    for (const element of document.querySelectorAll('[id]')) {
+      elements[element.id] = element;
+    }
   }
 
   function init() {

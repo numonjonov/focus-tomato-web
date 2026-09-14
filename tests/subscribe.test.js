@@ -10,7 +10,7 @@ const { createApp } = require('../backend/app');
 async function withServer(fn) {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ff-web-'));
   const dbPath = path.join(dir, 'subscribers.sqlite');
-  const app = createApp({ dbPath });
+  const { app, close } = createApp({ dbPath });
   const server = http.createServer(app);
   await new Promise((resolve) => server.listen(0, resolve));
   const { port } = server.address();
@@ -19,7 +19,7 @@ async function withServer(fn) {
     await fn(`http://127.0.0.1:${port}`, dbPath);
   } finally {
     await new Promise((resolve) => server.close(resolve));
-    app.close();
+    close();
     await fs.rm(dir, { recursive: true, force: true });
   }
 }
@@ -59,6 +59,17 @@ test('невалидный email возвращает 400 с понятным с
 test('пустое тело/отсутствующий email тоже 400', async () => {
   await withServer(async (baseUrl) => {
     const res = await postJSON(baseUrl, {});
+    assert.equal(res.status, 400);
+  });
+});
+
+test('битый JSON в теле запроса — тоже 400, а не 500', async () => {
+  await withServer(async (baseUrl) => {
+    const res = await fetch(`${baseUrl}/api/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{ не json'
+    });
     assert.equal(res.status, 400);
   });
 });
