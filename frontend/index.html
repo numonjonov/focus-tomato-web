@@ -56,29 +56,55 @@
           <h2>Фокус-таймер</h2>
           <p class="app-subtitle">Работает прямо здесь, в браузере — ничего устанавливать не нужно.</p>
 
-          <div class="timer-card">
-            <div class="mode-toggle" role="tablist" aria-label="Режим таймера">
-              <button class="mode-toggle-btn is-active" id="workModeButton" data-mode="work" role="tab" aria-selected="true">Работа</button>
-              <button class="mode-toggle-btn" id="breakModeButton" data-mode="break" role="tab" aria-selected="false">Отдых</button>
+          <div class="app-grid">
+            <div class="timer-card">
+              <div class="mode-toggle" role="tablist" aria-label="Режим таймера">
+                <button class="mode-toggle-btn is-active" id="workModeButton" data-mode="work" role="tab" aria-selected="true">Работа</button>
+                <button class="mode-toggle-btn" id="breakModeButton" data-mode="break" role="tab" aria-selected="false">Отдых</button>
+              </div>
+
+              <div class="timer-ring">
+                <svg viewBox="0 0 220 220" aria-hidden="true">
+                  <circle class="ring-bg" cx="110" cy="110" r="96"></circle>
+                  <circle class="ring-progress" id="timerProgress" cx="110" cy="110" r="96"></circle>
+                </svg>
+                <div class="timer-center">
+                  <div class="timer-time" id="timerTime">25:00</div>
+                  <div class="timer-mode-label" id="modeText">Фокус</div>
+                </div>
+              </div>
+
+              <div class="timer-actions">
+                <button class="button button-primary" id="startPauseButton">Старт</button>
+                <button class="button button-secondary" id="resetButton">Сброс</button>
+              </div>
+
+              <p class="timer-hint">Сегодня завершено помидоров: <strong id="todaySessionsCount">0</strong></p>
             </div>
 
-            <div class="timer-ring">
-              <svg viewBox="0 0 220 220" aria-hidden="true">
-                <circle class="ring-bg" cx="110" cy="110" r="96"></circle>
-                <circle class="ring-progress" id="timerProgress" cx="110" cy="110" r="96"></circle>
-              </svg>
-              <div class="timer-center">
-                <div class="timer-time" id="timerTime">25:00</div>
-                <div class="timer-mode-label" id="modeText">Фокус</div>
+            <div class="tasks-card">
+              <div class="tasks-tabs" role="tablist" aria-label="Список задач">
+                <button class="tasks-tab is-active" id="tabOpen" data-tab="open" role="tab" aria-selected="true">Задачи <span id="tabOpenCount">0/0</span></button>
+                <button class="tasks-tab" id="tabDone" data-tab="done" role="tab" aria-selected="false">Сделано <span id="tabDoneCount">0</span></button>
+              </div>
+
+              <div class="tasks-view" id="tasksOpenView">
+                <div class="tasks-empty" id="tasksEmpty">
+                  <p class="tasks-empty-title">Запланируй день</p>
+                  <p class="tasks-empty-hint">Каждая строка — задача. Маркеры <code>-</code> / <code>[ ]</code> срежутся автоматически.</p>
+                  <textarea id="tasksBulkInput" aria-label="Список задач на день" placeholder="- [ ] Разобрать почту&#10;- [ ] Подготовить отчёт&#10;…"></textarea>
+                  <button class="button button-primary" id="tasksBulkSubmit">Запланировать</button>
+                </div>
+                <div class="tasks-list" id="tasksList"></div>
+                <div class="tasks-inline-row hidden" id="tasksInlineRow">
+                  <input id="tasksInlineInput" aria-label="Новая задача" maxlength="200" placeholder="+ Новая задача (Enter)">
+                </div>
+              </div>
+
+              <div class="tasks-view hidden" id="tasksDoneView">
+                <div class="tasks-list" id="tasksDoneList"></div>
               </div>
             </div>
-
-            <div class="timer-actions">
-              <button class="button button-primary" id="startPauseButton">Старт</button>
-              <button class="button button-secondary" id="resetButton">Сброс</button>
-            </div>
-
-            <p class="timer-hint">Сегодня завершено помидоров: <strong id="todaySessionsCount">0</strong></p>
           </div>
         </div>
       </section>
@@ -101,7 +127,10 @@
     </div>
 
     <script src="./js/storage.js"></script>
+    <script src="./js/gamification.js"></script>
+    <script src="./js/tasks.js"></script>
     <script src="./js/timer.js"></script>
+    <script src="./js/tasksPanel.js"></script>
     <script src="./js/app.js"></script>
   </body>
 </html>

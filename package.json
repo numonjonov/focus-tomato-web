@@ -1,0 +1,9 @@
+{
+  "name": "focus-tomato-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FocusForge Web — Pomodoro-таймер с задачами и геймификацией, лендинг на русском/узбекском",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}

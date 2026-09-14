@@ -102,12 +102,16 @@
   }
 
   function recordPomodoroSession() {
-    data.sessions.unshift({
+    // Перечитываем актуальные данные перед записью: к этому моменту задачи
+    // (frontend/js/tasksPanel.js) могли уже сохранить в localStorage свои
+    // изменения, а `data` здесь может быть их более старым снимком с init().
+    const latest = root.FocusForgeStorage.loadData();
+    latest.sessions.unshift({
       date: getTodayDateKey(),
       time: getCurrentTimeLabel(),
       xp: 0
     });
-    data = root.FocusForgeStorage.saveData(data);
+    data = root.FocusForgeStorage.saveData(latest);
   }
 
   function onPomodoroAgain() {
