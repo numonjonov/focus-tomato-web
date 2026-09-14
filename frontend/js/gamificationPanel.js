@@ -18,6 +18,7 @@
 
   function init() {
     bindElements();
+    document.addEventListener('focusforge:langchange', refresh);
 
     let data = root.FocusForgeStorage.loadData();
     const today = formatDateKey(new Date());
@@ -37,32 +38,38 @@
   }
 
   function render(data, today) {
+    const { t, tFormat } = root.FocusForgeI18n;
     const level = getLevel(data.stats.totalXP);
     const progress = getLevelProgress(data.stats.totalXP);
     const todaySessions = getTodaySessions(data.sessions, today);
+    const levelName = t(`level_name_${level.level}`);
 
     elements.levelNumber.textContent = `Lvl ${level.level}`;
-    elements.levelName.textContent = level.name;
-    elements.streakText.textContent = `🔥 ${data.stats.currentStreak} дней`;
-    elements.todaySessionsText.textContent = `Сессий сегодня: ${todaySessions.length}`;
-    elements.totalXPText.textContent = `Всего XP: ${data.stats.totalXP}`;
+    elements.levelName.textContent = levelName;
+    elements.streakText.textContent = tFormat('stats_streak', { count: data.stats.currentStreak });
+    elements.todaySessionsText.textContent = tFormat('stats_sessions_today', { count: todaySessions.length });
+    elements.totalXPText.textContent = tFormat('stats_total_xp', { count: data.stats.totalXP });
 
     if (progress.required === 0) {
       elements.xpBarFill.style.width = '100%';
-      elements.xpProgressText.textContent = 'Максимальный уровень';
+      elements.xpProgressText.textContent = t('stats_max_level');
     } else {
       elements.xpBarFill.style.width = `${Math.min(100, (progress.current / progress.required) * 100)}%`;
-      elements.xpProgressText.textContent = `${progress.current} / ${progress.required} XP до Lvl ${progress.nextLevel}`;
+      elements.xpProgressText.textContent = tFormat('stats_xp_to_next', {
+        current: progress.current,
+        required: progress.required,
+        next: progress.nextLevel
+      });
     }
 
     if (lastLevel !== null && level.level > lastLevel) {
-      showLevelUp(level.name);
+      showLevelUp(levelName);
     }
     lastLevel = level.level;
   }
 
   function showLevelUp(levelName) {
-    elements.levelUpText.textContent = `Level Up! ${levelName} 🎉`;
+    elements.levelUpText.textContent = root.FocusForgeI18n.tFormat('level_up_text', { name: levelName });
     elements.levelUpOverlay.classList.remove('hidden');
     const confettiInstance = root.confetti?.create(elements.confettiCanvas, { resize: true });
     confettiInstance?.({

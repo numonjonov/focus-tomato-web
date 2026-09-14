@@ -16,6 +16,11 @@
     bindElements();
     elements.openHistoryButton.addEventListener('click', openHistory);
     elements.historyCloseButton.addEventListener('click', closeHistory);
+    document.addEventListener('focusforge:langchange', () => {
+      if (!elements.historyOverlay.classList.contains('hidden')) {
+        renderHistory();
+      }
+    });
   }
 
   function openHistory() {
@@ -39,18 +44,19 @@
   }
 
   function buildHistoryRow(day) {
+    const { tFormat } = root.FocusForgeI18n;
     const row = document.createElement('div');
     row.className = 'history-row';
     row.innerHTML = `
       <span class="history-row-date">${formatHistoryDate(day.date)}</span>
-      <span class="history-row-meta">${day.closed}/${day.total} задач · ${day.pomodoros} 🍅 · ${day.xp} XP</span>
+      <span class="history-row-meta">${tFormat('history_row', { closed: day.closed, total: day.total, pomodoros: day.pomodoros, xp: day.xp })}</span>
     `;
     return row;
   }
 
   function formatHistoryDate(dateKey) {
     const date = new Date(`${dateKey}T12:00:00`);
-    return new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: 'long', weekday: 'short' }).format(date);
+    return root.FocusForgeI18n.formatHistoryDate(date);
   }
 
   root.FocusForgeHistoryPanel = { init };

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusForge — Pomodoro-таймер с геймификацией</title>
+    <title data-i18n="meta_title">FocusForge — Pomodoro-таймер с геймификацией</title>
     <meta name="description" content="FocusForge — фокус-таймер по методике Pomodoro с задачами, XP и стриками. Работает прямо в браузере, без установки.">
     <link rel="stylesheet" href="./css/styles.css">
 
@@ -21,25 +21,29 @@
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="#hero">🍅 FocusForge</a>
-        <a class="button button-primary button-sm" href="#app">Попробовать</a>
+        <a class="button button-primary button-sm" href="#app" data-i18n="header_cta">Попробовать</a>
       </div>
     </header>
 
     <main>
       <section class="hero" id="hero">
         <div class="container hero-inner">
-          <p class="eyebrow">Pomodoro-таймер с геймификацией</p>
-          <h1>Фокус, который прокачивается вместе с тобой</h1>
-          <p class="hero-subtitle">
+          <div class="lang-switch" role="group" data-i18n-aria-label="lang_switch_label">
+            <button type="button" class="lang-switch-btn is-active" id="langButtonRu" data-lang="ru" data-i18n="lang_ru_label">RU</button>
+            <button type="button" class="lang-switch-btn" id="langButtonUz" data-lang="uz" data-i18n="lang_uz_label">UZ</button>
+          </div>
+          <p class="eyebrow" data-i18n="hero_eyebrow">Pomodoro-таймер с геймификацией</p>
+          <h1 data-i18n="hero_title">Фокус, который прокачивается вместе с тобой</h1>
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
             Помидоро-сессии, задачи на день и XP за прогресс — FocusForge превращает
             рабочий день в игру, в которую хочется возвращаться.
           </p>
-          <a class="button button-primary button-lg" href="#app">Начать фокус-сессию →</a>
+          <a class="button button-primary button-lg" href="#app" data-i18n="hero_cta">Начать фокус-сессию →</a>
 
           <form class="subscribe-form" id="subscribeForm" novalidate>
-            <label class="visually-hidden" for="subscribeEmail">Email</label>
-            <input type="email" id="subscribeEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
-            <button class="button button-secondary" type="submit" id="subscribeSubmit">Узнать первым о запуске</button>
+            <label class="visually-hidden" for="subscribeEmail" data-i18n="subscribe_email_label">Email</label>
+            <input type="email" id="subscribeEmail" name="email" placeholder="you@example.com" data-i18n-placeholder="subscribe_email_placeholder" autocomplete="email" required>
+            <button class="button button-secondary" type="submit" id="subscribeSubmit" data-i18n="subscribe_submit">Узнать первым о запуске</button>
           </form>
           <p class="subscribe-message hidden" id="subscribeMessage" role="status"></p>
         </div>
@@ -47,22 +51,22 @@
 
       <section class="features" id="features">
         <div class="container">
-          <h2>Что внутри</h2>
+          <h2 data-i18n="features_title">Что внутри</h2>
           <div class="features-grid">
             <article class="feature-card">
               <div class="feature-icon">⏱️</div>
-              <h3>Таймер</h3>
-              <p>Кольцевой прогресс-бар и понятный отсчёт работы и отдыха по методике Pomodoro.</p>
+              <h3 data-i18n="feature_timer_title">Таймер</h3>
+              <p data-i18n="feature_timer_text">Кольцевой прогресс-бар и понятный отсчёт работы и отдыха по методике Pomodoro.</p>
             </article>
             <article class="feature-card">
               <div class="feature-icon">✅</div>
-              <h3>Задачи</h3>
-              <p>Планируй день списком задач, перетаскивай для приоритета и отмечай готовое.</p>
+              <h3 data-i18n="feature_tasks_title">Задачи</h3>
+              <p data-i18n="feature_tasks_text">Планируй день списком задач, перетаскивай для приоритета и отмечай готовое.</p>
             </article>
             <article class="feature-card">
               <div class="feature-icon">🔥</div>
-              <h3>Геймификация</h3>
-              <p>XP за задачи и сессии, уровни и стрик дней подряд — прогресс, который видно.</p>
+              <h3 data-i18n="feature_gamification_title">Геймификация</h3>
+              <p data-i18n="feature_gamification_text">XP за задачи и сессии, уровни и стрик дней подряд — прогресс, который видно.</p>
             </article>
           </div>
         </div>
@@ -70,15 +74,15 @@
 
       <section class="app-section" id="app">
         <div class="container app-inner">
-          <h2>Фокус-таймер</h2>
-          <p class="app-subtitle">Работает прямо здесь, в браузере — ничего устанавливать не нужно.</p>
-          <button class="button button-secondary button-sm" id="openHistoryButton">История</button>
+          <h2 data-i18n="app_title">Фокус-таймер</h2>
+          <p class="app-subtitle" data-i18n="app_subtitle">Работает прямо здесь, в браузере — ничего устанавливать не нужно.</p>
+          <button class="button button-secondary button-sm" id="openHistoryButton" data-i18n="history_open_button">История</button>
 
           <div class="app-grid">
             <div class="timer-card">
-              <div class="mode-toggle" role="tablist" aria-label="Режим таймера">
-                <button class="mode-toggle-btn is-active" id="workModeButton" data-mode="work" role="tab" aria-selected="true">Работа</button>
-                <button class="mode-toggle-btn" id="breakModeButton" data-mode="break" role="tab" aria-selected="false">Отдых</button>
+              <div class="mode-toggle" role="tablist" data-i18n-aria-label="timer_mode_group_label">
+                <button class="mode-toggle-btn is-active" id="workModeButton" data-mode="work" role="tab" aria-selected="true" data-i18n="mode_work">Работа</button>
+                <button class="mode-toggle-btn" id="breakModeButton" data-mode="break" role="tab" aria-selected="false" data-i18n="mode_break">Отдых</button>
               </div>
 
               <div class="timer-ring">
@@ -88,34 +92,34 @@
                 </svg>
                 <div class="timer-center">
                   <div class="timer-time" id="timerTime">25:00</div>
-                  <div class="timer-mode-label" id="modeText">Фокус</div>
+                  <div class="timer-mode-label" id="modeText" data-i18n="timer_mode_focus">Фокус</div>
                 </div>
               </div>
 
               <div class="timer-actions">
-                <button class="button button-primary" id="startPauseButton">Старт</button>
-                <button class="button button-secondary" id="resetButton">Сброс</button>
+                <button class="button button-primary" id="startPauseButton" data-i18n="timer_start">Старт</button>
+                <button class="button button-secondary" id="resetButton" data-i18n="timer_reset">Сброс</button>
               </div>
 
-              <p class="timer-hint">Сегодня завершено помидоров: <strong id="todaySessionsCount">0</strong></p>
+              <p class="timer-hint"><span data-i18n="timer_sessions_label">Сегодня завершено помидоров:</span> <strong id="todaySessionsCount">0</strong></p>
             </div>
 
             <div class="tasks-card">
-              <div class="tasks-tabs" role="tablist" aria-label="Список задач">
-                <button class="tasks-tab is-active" id="tabOpen" data-tab="open" role="tab" aria-selected="true">Задачи <span id="tabOpenCount">0/0</span></button>
-                <button class="tasks-tab" id="tabDone" data-tab="done" role="tab" aria-selected="false">Сделано <span id="tabDoneCount">0</span></button>
+              <div class="tasks-tabs" role="tablist" data-i18n-aria-label="tasks_group_label">
+                <button class="tasks-tab is-active" id="tabOpen" data-tab="open" role="tab" aria-selected="true"><span data-i18n="tasks_tab_open">Задачи</span> <span id="tabOpenCount">0/0</span></button>
+                <button class="tasks-tab" id="tabDone" data-tab="done" role="tab" aria-selected="false"><span data-i18n="tasks_tab_done">Сделано</span> <span id="tabDoneCount">0</span></button>
               </div>
 
               <div class="tasks-view" id="tasksOpenView">
                 <div class="tasks-empty" id="tasksEmpty">
-                  <p class="tasks-empty-title">Запланируй день</p>
-                  <p class="tasks-empty-hint">Каждая строка — задача. Маркеры <code>-</code> / <code>[ ]</code> срежутся автоматически.</p>
-                  <textarea id="tasksBulkInput" aria-label="Список задач на день" placeholder="- [ ] Разобрать почту&#10;- [ ] Подготовить отчёт&#10;…"></textarea>
-                  <button class="button button-primary" id="tasksBulkSubmit">Запланировать</button>
+                  <p class="tasks-empty-title" data-i18n="tasks_empty_title">Запланируй день</p>
+                  <p class="tasks-empty-hint" data-i18n="tasks_empty_hint">Каждая строка — задача. Маркеры <code>-</code> / <code>[ ]</code> срежутся автоматически.</p>
+                  <textarea id="tasksBulkInput" data-i18n-aria-label="tasks_bulk_input_label" data-i18n-placeholder="tasks_bulk_input_placeholder" placeholder="- [ ] Разобрать почту&#10;- [ ] Подготовить отчёт&#10;…"></textarea>
+                  <button class="button button-primary" id="tasksBulkSubmit" data-i18n="tasks_bulk_submit">Запланировать</button>
                 </div>
                 <div class="tasks-list" id="tasksList"></div>
                 <div class="tasks-inline-row hidden" id="tasksInlineRow">
-                  <input id="tasksInlineInput" aria-label="Новая задача" maxlength="200" placeholder="+ Новая задача (Enter)">
+                  <input id="tasksInlineInput" data-i18n-aria-label="tasks_inline_input_label" data-i18n-placeholder="tasks_inline_input_placeholder" maxlength="200" placeholder="+ Новая задача (Enter)">
                 </div>
               </div>
 
@@ -145,17 +149,17 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container">🍅 FocusForge — фокус, который прокачивается вместе с тобой.</div>
+      <div class="container">🍅 FocusForge — <span data-i18n="footer_tagline">фокус, который прокачивается вместе с тобой.</span></div>
     </footer>
 
     <div class="modal-overlay hidden" id="pomodoroDoneModal">
       <div class="modal">
         <div class="modal-emoji">🍅</div>
-        <h3>Помидор готов!</h3>
-        <p>Отличная работа. Что дальше?</p>
+        <h3 data-i18n="modal_title">Помидор готов!</h3>
+        <p data-i18n="modal_text">Отличная работа. Что дальше?</p>
         <div class="modal-actions">
-          <button class="button button-secondary" id="pomodoroAgainButton">Ещё 🍅</button>
-          <button class="button button-primary" id="pomodoroBreakButton">Отдохнуть</button>
+          <button class="button button-secondary" id="pomodoroAgainButton" data-i18n="modal_again">Ещё 🍅</button>
+          <button class="button button-primary" id="pomodoroBreakButton" data-i18n="modal_break">Отдохнуть</button>
         </div>
       </div>
     </div>
@@ -168,8 +172,8 @@
     <div class="history-overlay hidden" id="historyOverlay">
       <div class="history-panel">
         <div class="history-header">
-          <h3>История</h3>
-          <button class="icon-button" id="historyCloseButton" aria-label="Закрыть">✕</button>
+          <h3 data-i18n="history_title">История</h3>
+          <button class="icon-button" id="historyCloseButton" data-i18n-aria-label="history_close" aria-label="Закрыть">✕</button>
         </div>
         <div class="history-body" id="historyBody"></div>
       </div>
@@ -177,6 +181,7 @@
 
     <script src="./vendor/confetti.browser.js"></script>
     <script src="./js/storage.js"></script>
+    <script src="./js/i18n.js"></script>
     <script src="./js/gamification.js"></script>
     <script src="./js/tasks.js"></script>
     <script src="./js/history.js"></script>

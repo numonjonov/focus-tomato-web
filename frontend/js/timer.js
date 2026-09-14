@@ -27,6 +27,7 @@
     elements.breakModeButton.addEventListener('click', () => switchMode('break'));
     elements.pomodoroAgainButton.addEventListener('click', onPomodoroAgain);
     elements.pomodoroBreakButton.addEventListener('click', onPomodoroBreak);
+    document.addEventListener('focusforge:langchange', renderTimer);
 
     resetTimer();
     renderSessionsCount();
@@ -131,9 +132,10 @@
   }
 
   function renderTimer() {
+    const { t } = root.FocusForgeI18n;
     elements.timerTime.textContent = formatTimer(remainingSeconds);
-    elements.startPauseButton.textContent = isRunning ? 'Пауза' : 'Старт';
-    elements.modeText.textContent = mode === 'work' ? 'Фокус' : 'Отдых';
+    elements.startPauseButton.textContent = isRunning ? t('timer_pause') : t('timer_start');
+    elements.modeText.textContent = mode === 'work' ? t('timer_mode_focus') : t('mode_break');
     elements.workModeButton.classList.toggle('is-active', mode === 'work');
     elements.breakModeButton.classList.toggle('is-active', mode === 'break');
     elements.timerProgress.classList.toggle('is-break', mode === 'break');

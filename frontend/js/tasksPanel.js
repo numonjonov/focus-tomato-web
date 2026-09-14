@@ -31,6 +31,7 @@
     elements.tabDone.addEventListener('click', () => { activeTab = 'done'; render(); });
     elements.tasksBulkSubmit.addEventListener('click', onBulkSubmit);
     elements.tasksInlineInput.addEventListener('keydown', onInlineKeydown);
+    document.addEventListener('focusforge:langchange', render);
 
     render();
   }
@@ -80,7 +81,7 @@
     if (!done.length) {
       const empty = document.createElement('div');
       empty.className = 'tasks-empty-inline';
-      empty.textContent = 'Пока ничего не закрыто';
+      empty.textContent = root.FocusForgeI18n.t('tasks_done_empty');
       elements.tasksDoneList.appendChild(empty);
       return;
     }
